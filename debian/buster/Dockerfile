@@ -2,6 +2,12 @@ FROM imiobe/base:debian-buster
 
 ENV DEBIAN_FRONTEND noninteractive
 
+LABEL plone=$PLONE_VERSION \
+    name="Libreoffice 6.1" \
+    description="A libreoffice server with custom font included for our customers" \
+    maintainer="iMio"
+
+COPY fonts/* /usr/local/share/fonts/
 RUN sed -i 's/ main/ main contrib/g' /etc/apt/sources.list \
   # needed because of jre installation bug https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
   && mkdir -p /usr/share/man/man1 \
@@ -11,6 +17,7 @@ RUN sed -i 's/ main/ main contrib/g' /etc/apt/sources.list \
     fontconfig \
     default-jre \
     libreoffice \
+    libreoffice-script-provider-python \
     fonts-crosextra-* \
     ttf-mscorefonts-installer \
     fonts-crosextra-* \
@@ -21,13 +28,8 @@ RUN sed -i 's/ main/ main contrib/g' /etc/apt/sources.list \
     fonts-sil-gentium-basic \
   && apt-get purge -qqy libreoffice-gtk* libreoffice-gnome* libreoffice-help* \
   && apt-get autoremove -qqy \
-  && apt-get autoclean -qqy
-
-ADD bash-vim.tar.gz /
-
-COPY fonts/* /usr/local/share/fonts/
-RUN fc-cache -f
-
+  && apt-get autoclean -qqy \
+  && fc-cache -f
 
 EXPOSE 2002
 USER imio
