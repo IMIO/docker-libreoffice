@@ -8,27 +8,25 @@ LABEL plone=$PLONE_VERSION \
     maintainer="iMio"
 
 COPY fonts/* /usr/local/share/fonts/
-RUN sed -i 's/ main/ main contrib/g' /etc/apt/sources.list \
-  # needed because of jre installation bug https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
-  && mkdir -p /usr/share/man/man1 \
+# needed because of jre installation bug https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
+RUN mkdir -p /usr/share/man/man1 \
   && apt-get update -qqy \
   && apt-get full-upgrade -qqy \
-  && apt-get -o APT::Install-Recommends=false -qqy install \
+  && apt-get install -qqy -o APT::Install-Recommends=false \
     fontconfig \
+    poppler-data \
+    poppler-utils \
     default-jre \
     libreoffice \
     libreoffice-script-provider-python \
-    fonts-crosextra-* \
-    ttf-mscorefonts-installer \
+    fonts-arkpandora-* \
     fonts-crosextra-* \
     fonts-dejavu \
     fonts-liberation \
     fonts-liberation2 \
     fonts-linuxlibertine \
+    fonts-roboto* \
     fonts-sil-gentium-basic \
-  && apt-get purge -qqy libreoffice-gtk* libreoffice-gnome* libreoffice-help* \
-  && apt-get autoremove -qqy \
-  && apt-get autoclean -qqy \
   && fc-cache -f
 
 EXPOSE 2002
