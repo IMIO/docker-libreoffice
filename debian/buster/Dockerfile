@@ -33,6 +33,6 @@ RUN sed -i 's/ main/ main contrib/g' /etc/apt/sources.list \
 
 EXPOSE 2002
 USER imio
-
+WORKDIR /home/imio
 ENTRYPOINT ["/usr/bin/soffice"]
 CMD ["--headless", "--norestore", "--nofirststartwizard", "--nodefault", "--accept='socket,host=libreoffice,port=2002,tcpNoDelay=1;urp;StarOffice.ServiceManager'"]
