@@ -14,8 +14,6 @@ RUN mkdir -p /usr/share/man/man1 \
   && apt-get full-upgrade -qqy \
   && apt-get install -qqy -o APT::Install-Recommends=false \
     fontconfig \
-    poppler-data \
-    poppler-utils \
     default-jre \
     libreoffice \
     libreoffice-script-provider-python \
@@ -27,10 +25,23 @@ RUN mkdir -p /usr/share/man/man1 \
     fonts-linuxlibertine \
     fonts-roboto* \
     fonts-sil-gentium-basic \
+    poppler-data \
+    poppler-utils \
+    graphicsmagick \
+    libmagic1 \
+    libpng16-16 \
+    libjpeg62-turbo \
+    libopenjp2-7 \
+    libwebp6\
+    lbzip2 \
+    libsigc++-2.0-0v5 \
   && fc-cache -f
 
 EXPOSE 2002
+
 USER imio
 WORKDIR /home/imio
-ENTRYPOINT ["/usr/bin/soffice"]
-CMD ["--headless", "--norestore", "--nofirststartwizard", "--nodefault", "--accept='socket,host=libreoffice,port=2002,tcpNoDelay=1;urp;StarOffice.ServiceManager'"]
+# initilize ~/.config/libreoffice
+RUN soffice --headless --terminate_after_init
+
+CMD soffice --headless --norestore --accept="socket,host=libreoffice,port=2002,tcpNoDelay=1;urp;StarOffice.ServiceManager"
