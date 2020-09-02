@@ -35,6 +35,7 @@ RUN mkdir -p /usr/share/man/man1 \
     libwebp6\
     lbzip2 \
     libsigc++-2.0-0v5 \
+  && apt-get purge libreoffice-gnome libreoffice-gtk* libreoffice-help* libreoffice-kde* \
   && fc-cache -f
 
 EXPOSE 2002
