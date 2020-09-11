@@ -1,9 +1,9 @@
-FROM imiobe/base:py2-ubuntu-20.04
+FROM imiobe/base:debian-buster
 
 ENV DEBIAN_FRONTEND noninteractive
 
 LABEL plone=$PLONE_VERSION \
-    name="Libreoffice 6.4" \
+    name="Libreoffice 6.1" \
     description="A libreoffice server with custom font included for our customers" \
     maintainer="iMio"
 
@@ -30,7 +30,7 @@ RUN mkdir -p /usr/share/man/man1 \
     graphicsmagick \
     libmagic1 \
     libpng16-16 \
-    libjpeg62 \
+    libjpeg62-turbo \
     libopenjp2-7 \
     libwebp6\
     lbzip2 \
