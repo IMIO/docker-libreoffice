@@ -2,14 +2,14 @@ FROM imiobe/base:py2-ubuntu-20.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
-LABEL plone=$PLONE_VERSION \
-    name="Libreoffice 6.4" \
-    description="A libreoffice server with custom font included for our customers" \
-    maintainer="iMio"
+LABEL name="Libreoffice Fresh" \
+      description="A libreoffice server with custom font included for our customers" \
+      maintainer="iMio"
 
 COPY fonts/* /usr/local/share/fonts/
 # needed because of jre installation bug https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
 RUN mkdir -p /usr/share/man/man1 \
+  && add-apt-repository ppa:libreoffice/ppa \
   && apt-get update -qqy \
   && apt-get full-upgrade -qqy \
   && apt-get install -qqy -o APT::Install-Recommends=false \
