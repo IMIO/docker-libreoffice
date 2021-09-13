@@ -26,6 +26,9 @@ jobs:
           tags: imiobe/libreoffice:still
           pull: true
           push: true
+      - name: Show version
+        run: |
+          docker run imiobe/libreoffice:still soffice --version
 
   ubuntu_20_04_fresh:
     runs-on: ubuntu-latest
@@ -48,3 +51,6 @@ jobs:
           tags: imiobe/libreoffice:fresh
           pull: true
           push: true
+      - name: Show version
+        run: |
+          docker run imiobe/libreoffice:fresh soffice --version
