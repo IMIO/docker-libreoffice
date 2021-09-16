@@ -7,14 +7,12 @@ LABEL name="Libreoffice Still" \
       maintainer="iMio"
 
 COPY fonts/* /usr/local/share/fonts/
-# needed because of jre installation bug https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
-RUN mkdir -p /usr/share/man/man1 \
-  && add-apt-repository ppa:libreoffice/libreoffice-still \
-  && apt-get update -qqy \
+
+RUN add-apt-repository -yu ppa:libreoffice/libreoffice-still \
   && apt-get full-upgrade -qqy \
   && apt-get install -qqy -o APT::Install-Recommends=false \
     fontconfig \
-    default-jre \
+    openjdk-16-jre-headless \
     libreoffice \
     libreoffice-script-provider-python \
     fonts-arkpandora-* \
