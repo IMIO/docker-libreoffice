@@ -22,8 +22,9 @@ jobs:
       - name: still
         uses: docker/build-push-action@v2.5.0
         with:
-          file: still/Dockerfile
+#          file: still/Dockerfile
           tags: imiobe/libreoffice:still
+          build-args: libreoffice-still
           pull: true
           push: true
       - name: Show version
@@ -48,8 +49,9 @@ jobs:
       - name: fresh
         uses: docker/build-push-action@v2.5.0
         with:
-          file: fresh/Dockerfile
+#          file: fresh/Dockerfile
           tags: imiobe/libreoffice:fresh
+          build-args: ppa
           pull: true
           push: true
       - name: Show version

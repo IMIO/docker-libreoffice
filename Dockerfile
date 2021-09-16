@@ -1,14 +1,15 @@
 FROM imiobe/base:py2-ubuntu-20.04
 
 ENV DEBIAN_FRONTEND noninteractive
+ARG LO_PPA=libreoffice-still
 
-LABEL name="Libreoffice Fresh" \
+LABEL name="Libreoffice Still" \
       description="A libreoffice server with custom font included for our customers" \
       maintainer="iMio"
 
 COPY fonts/* /usr/local/share/fonts/
 
-RUN add-apt-repository -yu ppa:libreoffice/ppa \
+RUN add-apt-repository -yu ppa:libreoffice/$LO_PPA \
   && apt-get full-upgrade -qqy \
   && apt-get install -qqy -o APT::Install-Recommends=false \
     fontconfig \
@@ -31,6 +32,7 @@ RUN add-apt-repository -yu ppa:libreoffice/ppa \
     libjpeg62 \
     libopenjp2-7 \
     libwebp6\
+    libgif7 \
     lbzip2 \
     libsigc++-2.0-0v5 \
   && apt-get purge libreoffice-gnome libreoffice-gtk* libreoffice-help* libreoffice-kde* \
