@@ -3,7 +3,7 @@ on:
   push:
     branches: [ master ]
   schedule:
-    - cron: '0 3 * * *' # Weekly on Sundays at 03:00
+    - cron: '0 3 * * 1' # Weekly on Sundays at 03:00
 jobs:
   ubuntu_20_04_still:
     runs-on: ubuntu-latest
