@@ -52,7 +52,7 @@ jobs:
         with:
 #          file: fresh/Dockerfile
           tags: imiobe/libreoffice:fresh
-          build-args: LO_PPA=libreoffice-fresh
+          build-args: LO_PPA=ppa
           pull: true
           push: true
       - name: Show version
