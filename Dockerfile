@@ -3,7 +3,7 @@ FROM imiobe/base:py2-ubuntu-20.04
 ENV DEBIAN_FRONTEND noninteractive
 ARG LO_PPA=libreoffice-still
 
-LABEL name="Libreoffice Still" \
+LABEL name="Libreoffice" \
       description="A libreoffice server with custom font included for our customers" \
       maintainer="iMio"
 
