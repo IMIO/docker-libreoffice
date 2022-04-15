@@ -25,7 +25,7 @@ jobs:
         with:
 #          file: still/Dockerfile
           tags: imiobe/libreoffice:still
-          build-args: libreoffice-still
+          build-args: LO_PPA=libreoffice-still
           pull: true
           push: true
       - name: Show version
@@ -52,7 +52,7 @@ jobs:
         with:
 #          file: fresh/Dockerfile
           tags: imiobe/libreoffice:fresh
-          build-args: ppa
+          build-args: LO_PPA=libreoffice-fresh
           pull: true
           push: true
       - name: Show version
