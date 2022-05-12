@@ -1,7 +1,7 @@
-FROM imiobe/base:py2-ubuntu-20.04
+FROM imiobe/base:py2-ubuntu-22.04
 
 ENV DEBIAN_FRONTEND noninteractive
-ARG LO_PPA=libreoffice-still
+# ARG LO_PPA=libreoffice-still
 
 LABEL name="Libreoffice" \
       description="A libreoffice server with custom font included for our customers" \
@@ -9,11 +9,13 @@ LABEL name="Libreoffice" \
 
 COPY fonts/* /usr/local/share/fonts/
 
-RUN add-apt-repository -yu ppa:libreoffice/$LO_PPA \
+# RUN add-apt-repository -yu ppa:libreoffice/$LO_PPA \
+RUN apt-get update -qqy \
   && apt-get full-upgrade -qqy \
-  && apt-get install -qqy -o APT::Install-Recommends=false \
+  && apt-get install --no-install-recommends -qqy \
+    python-is-python3 \
     fontconfig \
-    openjdk-16-jre-headless \
+    openjdk-18-jre-headless \
     libreoffice \
     libreoffice-script-provider-python \
     fonts-arkpandora-* \
@@ -30,9 +32,11 @@ RUN add-apt-repository -yu ppa:libreoffice/$LO_PPA \
     libmagic1 \
     libpng16-16 \
     libjpeg62 \
+    libwebp7 \
     libopenjp2-7 \
-    libwebp6\
+    libtiff5 \
     libgif7 \
+    librsvg2-bin \
     lbzip2 \
     libsigc++-2.0-0v5 \
   && apt-get purge libreoffice-gnome libreoffice-gtk* libreoffice-help* libreoffice-kde* \
