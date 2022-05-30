@@ -47,7 +47,11 @@ EXPOSE 2002
 
 USER imio
 WORKDIR /home/imio
+COPY apply_binding.py font-mappings.csv /home/imio/
 # initilize ~/.config/libreoffice
-RUN soffice --headless --terminate_after_init
+RUN soffice --headless --terminate_after_init  \
+# configure font replacement
+  && python3 apply_binding.py \
+  && rm apply_binding.py font-mappings.csv
 
 CMD soffice --headless --norestore --accept="socket,host=libreoffice,port=2002,tcpNoDelay=1;urp;StarOffice.ServiceManager"
