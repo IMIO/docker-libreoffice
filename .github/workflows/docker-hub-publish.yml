@@ -32,4 +32,7 @@ jobs:
         run: |
           docker pull -q imiobe/libreoffice:7.3
           docker run imiobe/libreoffice:7.3 soffice --version
-
+      - name: Show fonts
+        run: |
+          docker pull -q imiobe/libreoffice:7.3
+          docker run imiobe/libreoffice:7.3 fc-list : family | sort | uniq

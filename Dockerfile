@@ -19,7 +19,8 @@ RUN apt-get update -qqy \
     libreoffice \
     libreoffice-script-provider-python \
     fonts-arkpandora-* \
-    fonts-crosextra-* \
+    fonts-croscore* \
+    fonts-crosextra* \
     fonts-dejavu \
     fonts-liberation \
     fonts-liberation2 \
