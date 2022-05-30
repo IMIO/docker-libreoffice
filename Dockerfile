@@ -17,6 +17,7 @@ RUN apt-get update -qqy \
     fontconfig \
     openjdk-18-jre-headless \
     libreoffice \
+    libreoffice-java-common \
     libreoffice-script-provider-python \
     fonts-arkpandora-* \
     fonts-croscore* \
