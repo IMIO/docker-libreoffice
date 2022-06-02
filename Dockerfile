@@ -19,7 +19,7 @@ RUN apt-get update -qqy \
     libreoffice \
     libreoffice-java-common \
     libreoffice-script-provider-python \
-    fonts-arkpandora-* \
+    fonts-arkpandora* \
     fonts-croscore* \
     fonts-crosextra* \
     fonts-dejavu \
