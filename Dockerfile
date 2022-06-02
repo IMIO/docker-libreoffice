@@ -27,6 +27,7 @@ RUN apt-get update -qqy \
     fonts-liberation2 \
     fonts-linuxlibertine \
     fonts-roboto* \
+    fonts-noto* \
     fonts-sil-gentium-basic \
     poppler-data \
     poppler-utils \
