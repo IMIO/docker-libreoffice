@@ -49,11 +49,13 @@ EXPOSE 2002
 
 USER imio
 WORKDIR /home/imio
-COPY apply_binding.py font-mappings.csv /home/imio/
+COPY --chown=imio apply_binding.py font-mappings.csv healthcheck.sh healthcheck.py healthcheck.odt /home/imio/
+HEALTHCHECK --timeout=5s CMD /home/imio/healthcheck.sh || exit 1
 # initilize ~/.config/libreoffice
 RUN soffice --headless --terminate_after_init  \
 # configure font replacement
   && python3 apply_binding.py \
   && rm apply_binding.py font-mappings.csv
 
-CMD soffice --headless --norestore --accept="socket,host=libreoffice,port=2002,tcpNoDelay=1;urp;StarOffice.ServiceManager"
+CMD soffice '--accept=socket,host=0.0.0.0,port=2002;urp;StarOffice.ServiceManager' --nologo --headless --nofirststartwizard --norestore
+
