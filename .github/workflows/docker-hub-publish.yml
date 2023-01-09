@@ -6,7 +6,7 @@ on:
   schedule:
     - cron: '0 3 * * 1' # Weekly on Mondays at 03:00
 jobs:
-  ubuntu_22_04_lo_7_3:
+  ubuntu_22_04_lo_fresh:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,12 +20,71 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      - name: still
+      - name: build
         uses: docker/build-push-action@v2.5.0
         with:
-#          file: still/Dockerfile
-          tags: imiobe/libreoffice:7.3
-          build-args: LO_PPA=libreoffice-still
+          tags: imiobe/libreoffice:fresh
+          build-args: |
+            LO_PPA=ppa
+          pull: true
+          push: true
+      - name: Show version
+        run: |
+          docker pull -q imiobe/libreoffice:fresh
+          docker run imiobe/libreoffice:fresh soffice --version
+      - name: Show fonts
+        run: |
+          docker pull -q imiobe/libreoffice:fresh
+          docker run imiobe/libreoffice:fresh fc-list : family | sort | uniq
+  ubuntu_22_04_lo_still:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: build
+        uses: docker/build-push-action@v2.5.0
+        with:
+          tags: imiobe/libreoffice:still
+          build-args: |
+            LO_PPA=libreoffice-still
+          pull: true
+          push: true
+      - name: Show version
+        run: |
+          docker pull -q imiobe/libreoffice:still
+          docker run imiobe/libreoffice:still soffice --version
+      - name: Show fonts
+        run: |
+          docker pull -q imiobe/libreoffice:still
+          docker run imiobe/libreoffice:still fc-list : family | sort | uniq
+  ubuntu_22_04_lo_default:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: build
+        uses: docker/build-push-action@v2.5.0
+        with:
+          file: Dockerfile-default
+          tags: imiobe/libreoffice:default
           pull: true
           push: true
       - name: Show version
