@@ -1,8 +1,6 @@
 FROM imiobe/base:py2-ubuntu-22.04
 
 ENV DEBIAN_FRONTEND noninteractive
-#ARG LO_PPA=libreoffice-fresh
-ARG LO_PPA=ppa
 
 LABEL name="Libreoffice" \
       description="A libreoffice server with custom font included for our customers" \
@@ -10,8 +8,7 @@ LABEL name="Libreoffice" \
 
 COPY fonts/* /usr/local/share/fonts/
 
-RUN add-apt-repository -y ppa:libreoffice/${LO_PPA} \
-  && apt-get update -qqy \
+RUN apt-get update -qqy \
   && apt-get full-upgrade -qqy \
   && apt-get install --no-install-recommends -qqy \
     python-is-python3 \
