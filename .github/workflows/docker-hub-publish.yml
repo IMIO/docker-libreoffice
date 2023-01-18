@@ -84,7 +84,7 @@ jobs:
         uses: docker/build-push-action@v2.5.0
         with:
           file: Dockerfile-default
-          tags: imiobe/libreoffice:default, 7.3
+          tags: imiobe/libreoffice:default, imiobe/libreoffice:7.3
           pull: true
           push: true
       - name: Show version
