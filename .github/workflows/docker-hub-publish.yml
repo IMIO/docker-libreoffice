@@ -90,8 +90,8 @@ jobs:
       - name: Show version
         run: |
           docker pull -q imiobe/libreoffice:default
-          docker run imiobe/libreoffice:7.3 soffice --version
+          docker run imiobe/libreoffice:default soffice --version
       - name: Show fonts
         run: |
           docker pull -q imiobe/libreoffice:default
-          docker run imiobe/libreoffice:7.3 fc-list : family | sort | uniq
+          docker run imiobe/libreoffice:default fc-list : family | sort | uniq

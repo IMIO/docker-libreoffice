@@ -16,7 +16,7 @@ RUN add-apt-repository -y ppa:libreoffice/${LO_PPA} \
   && apt-get install --no-install-recommends -qqy \
     python-is-python3 \
     fontconfig \
-    openjdk-18-jre-headless \
+    default-jre-headless \
     libreoffice \
     libreoffice-java-common \
     libreoffice-script-provider-python \
