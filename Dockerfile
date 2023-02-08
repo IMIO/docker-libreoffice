@@ -18,8 +18,6 @@ RUN add-apt-repository -y ppa:libreoffice/${LO_PPA} \
     fontconfig \
     default-jre-headless \
     libreoffice \
-    libreoffice-java-common \
-    libreoffice-script-provider-python \
     fonts-arkpandora* \
     fonts-croscore* \
     fonts-crosextra* \
@@ -50,8 +48,8 @@ EXPOSE 2002
 
 USER imio
 WORKDIR /home/imio
-COPY --chown=imio apply_binding.py font-mappings.csv healthcheck.sh healthcheck.py healthcheck.odt /home/imio/
-HEALTHCHECK --timeout=5s CMD /home/imio/healthcheck.sh || exit 1
+COPY --chown=imio apply_binding.py font-mappings.csv /home/imio/
+HEALTHCHECK --timeout=1s CMD timeout 1s bash -c ':> /dev/tcp/127.0.0.1/2002'
 # initilize ~/.config/libreoffice
 RUN soffice --headless --terminate_after_init  \
 # configure font replacement
