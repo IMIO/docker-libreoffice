@@ -17,6 +17,7 @@ RUN add-apt-repository -y ppa:libreoffice/${LO_PPA} \
     python-is-python3 \
     fontconfig \
     default-jre-headless \
+    libreoffice-java-common \
     libreoffice \
     fonts-arkpandora* \
     fonts-croscore* \
@@ -41,7 +42,7 @@ RUN add-apt-repository -y ppa:libreoffice/${LO_PPA} \
     librsvg2-bin \
     lbzip2 \
     libsigc++-2.0-0v5 \
-  && apt-get purge libreoffice-gnome libreoffice-gtk* libreoffice-help* libreoffice-kde* \
+  && apt-get purge libreoffice-gnome* libreoffice-gtk* libreoffice-help* libreoffice-kde* \
   && fc-cache -f
 
 EXPOSE 2002
