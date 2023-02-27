@@ -43,6 +43,7 @@ RUN add-apt-repository -y ppa:libreoffice/${LO_PPA} \
     lbzip2 \
     libsigc++-2.0-0v5 \
   && apt-get purge libreoffice-gnome* libreoffice-gtk* libreoffice-help* libreoffice-kde* \
+  && rm -rf /var/lib/apt/lists/* \
   && fc-cache -f
 
 EXPOSE 2002
