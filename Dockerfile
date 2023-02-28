@@ -18,7 +18,8 @@ RUN add-apt-repository -y ppa:libreoffice/${LO_PPA} \
     fontconfig \
     default-jre-headless \
     libreoffice-java-common \
-    libreoffice \
+    libreoffice-writer \
+    libreoffice-calc \
     fonts-arkpandora* \
     fonts-croscore* \
     fonts-crosextra* \
