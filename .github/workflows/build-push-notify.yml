@@ -20,7 +20,7 @@ jobs:
         with:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           IMAGE_TAGS: |
-            "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh"
+            ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh
           REGISTRY_URL: ${{ secrets.HARBOR_URL }}
           REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
           REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
@@ -31,9 +31,9 @@ jobs:
       - name: Get version
         shell: bash
         run: |
-          docker pull -q "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh"
-          docker run "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh" soffice --version
-          echo VERSION=$(docker run "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh" | cut -d ' ' -f 2 | cut -d '.' -f 1-2) | tr -d [:space:] >> $GITHUB_ENV
+          docker pull -q ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh
+          docker run ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh soffice --version
+          echo VERSION=$(docker run ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh soffice --version | cut -d ' ' -f 2 | cut -d '.' -f 1-2) | tr -d [:space:] >> $GITHUB_ENV
       - name: Tag and notify
         uses: IMIO/gha/tag-notify@v3.3
         with:
@@ -54,7 +54,7 @@ jobs:
         with:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           IMAGE_TAGS: |
-            "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still"
+            ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still
           REGISTRY_URL: ${{ secrets.HARBOR_URL }}
           REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
           REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
@@ -65,9 +65,9 @@ jobs:
       - name: Get version
         shell: bash
         run: |
-          docker pull -q "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still"
-          docker run "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still" soffice --version     
-          echo VERSION=$(docker run "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still" | cut -d ' ' -f 2 | cut -d '.' -f 1-2) | tr -d [:space:] >> $GITHUB_ENV
+          docker pull -q ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still
+          docker run ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still soffice --version     
+          echo VERSION=$(docker run ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still soffice --version | cut -d ' ' -f 2 | cut -d '.' -f 1-2) | tr -d [:space:] >> $GITHUB_ENV
       - name: Tag and notify
         uses: IMIO/gha/tag-notify@v3.3
         with:
@@ -88,7 +88,7 @@ jobs:
         with:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           IMAGE_TAGS: |
-            "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default"
+            ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default
           REGISTRY_URL: ${{ secrets.HARBOR_URL }}
           REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
           REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
@@ -99,9 +99,9 @@ jobs:
       - name: Get version
         shell: bash
         run: |
-          docker pull -q "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default"
-          docker run "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default" soffice --version
-          echo VERSION=$(docker run "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default" | cut -d ' ' -f 2 | cut -d '.' -f 1-2) | tr -d [:space:] >> $GITHUB_ENV
+          docker pull -q ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default
+          docker run ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default soffice --version
+          echo VERSION=$(docker run ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default soffice --version | cut -d ' ' -f 2 | cut -d '.' -f 1-2) | tr -d [:space:] >> $GITHUB_ENV
       - name: Tag and notify
         uses: IMIO/gha/tag-notify@v3.3
         with:
