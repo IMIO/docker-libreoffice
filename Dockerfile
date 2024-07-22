@@ -1,4 +1,4 @@
-FROM imiobe/base:py2-ubuntu-22.04
+FROM harbor.imio.be/common/base:py2-ubuntu-22.04
 
 ENV DEBIAN_FRONTEND noninteractive
 #ARG LO_PPA=libreoffice-fresh

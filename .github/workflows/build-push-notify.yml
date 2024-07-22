@@ -1,0 +1,114 @@
+name: Update images
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+  schedule:
+    - cron: '0 3 * * 1' # Weekly on Mondays at 03:00
+
+env:
+  IMAGE_NAME: common/libreoffice
+
+jobs:
+  ubuntu_22_04_lo_fresh:
+    runs-on:
+      group: self-hosted
+    steps:
+      - name: Build and publish fresh image to harbor
+        uses: IMIO/gha/build-push-notify@v3.3
+        with:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          IMAGE_TAGS: |
+            "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh"
+          REGISTRY_URL: ${{ secrets.HARBOR_URL }}
+          REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.COMMON_MATTERMOST_WEBHOOK_URL }}
+          CONTEXT: '.'
+          DOCKERFILE: './Dockerfile'
+          BUILD_ARGS: LO_PPA=ppa
+      - name: Get version
+        shell: bash
+        run: |
+          docker pull -q "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh"
+          docker run "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh" soffice --version
+          echo VERSION=$(docker run "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh" | cut -d ' ' -f 2 | cut -d '.' -f 1-2) | tr -d [:space:] >> $GITHUB_ENV
+      - name: Tag and notify
+        uses: IMIO/gha/tag-notify@v3.3
+        with:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          IMAGE_TAG: fresh
+          NEW_IMAGE_TAGS: ${{ env.VERSION }}
+          REGISTRY_URL: ${{ secrets.HARBOR_URL }}
+          REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.COMMON_MATTERMOST_WEBHOOK_URL }}
+
+  ubuntu_22_04_lo_still:
+    runs-on:
+      group: self-hosted
+    steps:
+      - name: Build and publish still image to harbor
+        uses: IMIO/gha/build-push-notify@v3.3
+        with:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          IMAGE_TAGS: |
+            "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still"
+          REGISTRY_URL: ${{ secrets.HARBOR_URL }}
+          REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.COMMON_MATTERMOST_WEBHOOK_URL }}
+          CONTEXT: '.'
+          DOCKERFILE: './Dockerfile'
+          BUILD_ARGS: LO_PPA=libreoffice-still
+      - name: Get version
+        shell: bash
+        run: |
+          docker pull -q "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still"
+          docker run "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still" soffice --version     
+          echo VERSION=$(docker run "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still" | cut -d ' ' -f 2 | cut -d '.' -f 1-2) | tr -d [:space:] >> $GITHUB_ENV
+      - name: Tag and notify
+        uses: IMIO/gha/tag-notify@v3.3
+        with:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          IMAGE_TAG: still
+          NEW_IMAGE_TAGS: ${{ env.VERSION }}
+          REGISTRY_URL: ${{ secrets.HARBOR_URL }}
+          REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.COMMON_MATTERMOST_WEBHOOK_URL }}
+
+  ubuntu_22_04_lo_default:
+    runs-on:
+      group: self-hosted
+    steps:
+      - name: Build and publish default image to harbor
+        uses: IMIO/gha/build-push-notify@v3.3
+        with:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          IMAGE_TAGS: |
+            "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default"
+          REGISTRY_URL: ${{ secrets.HARBOR_URL }}
+          REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.COMMON_MATTERMOST_WEBHOOK_URL }}
+          CONTEXT: '.'
+          DOCKERFILE: './Dockerfile-default'
+          BUILD_ARGS: LO_PPA=default
+      - name: Get version
+        shell: bash
+        run: |
+          docker pull -q "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default"
+          docker run "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default" soffice --version
+          echo VERSION=$(docker run "${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default" | cut -d ' ' -f 2 | cut -d '.' -f 1-2) | tr -d [:space:] >> $GITHUB_ENV
+      - name: Tag and notify
+        uses: IMIO/gha/tag-notify@v3.3
+        with:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          IMAGE_TAG: default
+          NEW_IMAGE_TAGS: ${{ env.VERSION }}
+          REGISTRY_URL: ${{ secrets.HARBOR_URL }}
+          REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.COMMON_MATTERMOST_WEBHOOK_URL }}
