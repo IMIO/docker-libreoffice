@@ -12,8 +12,7 @@ env:
 
 jobs:
   ubuntu_22_04_lo_fresh:
-    runs-on:
-      group: self-hosted
+    runs-on: gha-runners
     steps:
       - name: Build and publish fresh image to harbor
         uses: IMIO/gha/build-push-notify@v3.3
@@ -46,8 +45,7 @@ jobs:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.COMMON_MATTERMOST_WEBHOOK_URL }}
 
   ubuntu_22_04_lo_still:
-    runs-on:
-      group: self-hosted
+    runs-on: gha-runners
     steps:
       - name: Build and publish still image to harbor
         uses: IMIO/gha/build-push-notify@v3.3
@@ -80,8 +78,7 @@ jobs:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.COMMON_MATTERMOST_WEBHOOK_URL }}
 
   ubuntu_22_04_lo_default:
-    runs-on:
-      group: self-hosted
+    runs-on: gha-runners
     steps:
       - name: Build and publish default image to harbor
         uses: IMIO/gha/build-push-notify@v3.3
