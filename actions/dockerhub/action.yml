@@ -1,0 +1,27 @@
+name: 'Build and publish to dockerhub'
+description: 'Build and publish to dockerhub'
+inputs:
+  DOCKERHUB_USERNAME:
+    description: 'DOCKERHUB_USERNAME'
+    required: true
+  DOCKERHUB_PASSWORD:
+    description: 'DOCKERHUB_PASSWORD'
+    required: true
+  tag:
+    description: 'Tag name'
+    required: true
+  arg:
+    description: 'Build Arg'
+    required: false
+  dockerfile:
+    description: 'Path to Dockerfile'
+    required: true
+    default: ./Dockerfile
+runs:
+  using: "composite"
+
+#    - name: Show fonts
+#      shell: bash
+#      run: |
+#        docker run imiobe/libreoffice:${{ inputs.tag }} fc-list : family | sort | uniq
+
