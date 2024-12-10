@@ -9,17 +9,19 @@ on:
 
 env:
   IMAGE_NAME: common/libreoffice
+  PUBLIC_IMAGE_NAME: library/libreoffice
 
 jobs:
   ubuntu_22_04_lo_fresh:
     runs-on: gha-runners
     steps:
       - name: Build and publish fresh image to harbor
-        uses: IMIO/gha/build-push-notify@v3.3
+        uses: IMIO/gha/build-push-notify@v4
         with:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           IMAGE_TAGS: |
             ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh
+            ${{ secrets.HARBOR_URL }}/${{ env.PUBLIC_IMAGE_NAME }}:fresh
           REGISTRY_URL: ${{ secrets.HARBOR_URL }}
           REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
           REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
@@ -33,8 +35,8 @@ jobs:
           docker pull -q ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh
           docker run ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh soffice --version
           echo VERSION=$(docker run ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:fresh soffice --version | cut -d ' ' -f 2 | cut -d '.' -f 1-2) | tr -d [:space:] >> $GITHUB_ENV
-      - name: Tag and notify
-        uses: IMIO/gha/tag-notify@v3.3
+      - name: Tag and notify on common
+        uses: IMIO/gha/tag-notify@v4
         with:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           IMAGE_TAG: fresh
@@ -43,16 +45,28 @@ jobs:
           REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
           REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
           MATTERMOST_WEBHOOK_URL: ${{ secrets.COMMON_MATTERMOST_WEBHOOK_URL }}
+      - name: Tag and notify on library
+        uses: IMIO/gha/tag-notify@v4
+        with:
+          IMAGE_NAME: ${{ env.PUBLIC_IMAGE_NAME }}
+          IMAGE_TAG: fresh
+          NEW_IMAGE_TAGS: ${{ env.VERSION }}
+          REGISTRY_URL: ${{ secrets.HARBOR_URL }}
+          REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.COMMON_MATTERMOST_WEBHOOK_URL }}
+
 
   ubuntu_22_04_lo_still:
     runs-on: gha-runners
     steps:
       - name: Build and publish still image to harbor
-        uses: IMIO/gha/build-push-notify@v3.3
+        uses: IMIO/gha/build-push-notify@v4
         with:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           IMAGE_TAGS: |
             ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still
+            ${{ secrets.HARBOR_URL }}/${{ env.PUBLIC_IMAGE_NAME }}:still
           REGISTRY_URL: ${{ secrets.HARBOR_URL }}
           REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
           REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
@@ -66,10 +80,20 @@ jobs:
           docker pull -q ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still
           docker run ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still soffice --version     
           echo VERSION=$(docker run ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:still soffice --version | cut -d ' ' -f 2 | cut -d '.' -f 1-2) | tr -d [:space:] >> $GITHUB_ENV
-      - name: Tag and notify
-        uses: IMIO/gha/tag-notify@v3.3
+      - name: Tag and notify on common
+        uses: IMIO/gha/tag-notify@v4
         with:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          IMAGE_TAG: still
+          NEW_IMAGE_TAGS: ${{ env.VERSION }}
+          REGISTRY_URL: ${{ secrets.HARBOR_URL }}
+          REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.COMMON_MATTERMOST_WEBHOOK_URL }}
+      - name: Tag and notify on library
+        uses: IMIO/gha/tag-notify@v4
+        with:
+          IMAGE_NAME: ${{ env.PUBLIC_IMAGE_NAME }}
           IMAGE_TAG: still
           NEW_IMAGE_TAGS: ${{ env.VERSION }}
           REGISTRY_URL: ${{ secrets.HARBOR_URL }}
@@ -81,11 +105,12 @@ jobs:
     runs-on: gha-runners
     steps:
       - name: Build and publish default image to harbor
-        uses: IMIO/gha/build-push-notify@v3.3
+        uses: IMIO/gha/build-push-notify@v4
         with:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           IMAGE_TAGS: |
             ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default
+            ${{ secrets.HARBOR_URL }}/${{ env.PUBLIC_IMAGE_NAME }}:default
           REGISTRY_URL: ${{ secrets.HARBOR_URL }}
           REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
           REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
@@ -99,10 +124,20 @@ jobs:
           docker pull -q ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default
           docker run ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default soffice --version
           echo VERSION=$(docker run ${{ secrets.HARBOR_URL }}/${{ env.IMAGE_NAME }}:default soffice --version | cut -d ' ' -f 2 | cut -d '.' -f 1-2) | tr -d [:space:] >> $GITHUB_ENV
-      - name: Tag and notify
-        uses: IMIO/gha/tag-notify@v3.3
+      - name: Tag and notify on common
+        uses: IMIO/gha/tag-notify@v4
         with:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          IMAGE_TAG: default
+          NEW_IMAGE_TAGS: ${{ env.VERSION }}
+          REGISTRY_URL: ${{ secrets.HARBOR_URL }}
+          REGISTRY_USERNAME: ${{ secrets.COMMON_HARBOR_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.COMMON_HARBOR_PASSWORD }}
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.COMMON_MATTERMOST_WEBHOOK_URL }}
+      - name: Tag and notify on library
+        uses: IMIO/gha/tag-notify@v4
+        with:
+          IMAGE_NAME: ${{ env.PUBLIC_IMAGE_NAME }}
           IMAGE_TAG: default
           NEW_IMAGE_TAGS: ${{ env.VERSION }}
           REGISTRY_URL: ${{ secrets.HARBOR_URL }}
