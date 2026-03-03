@@ -1,6 +1,8 @@
 FROM harbor.imio.be/common/base:py2-ubuntu-22.04
 
 ENV DEBIAN_FRONTEND noninteractive
+# Default to offline mode (no external DNS lookups)
+ENV OFFLINE=true
 #ARG LO_PPA=libreoffice-fresh
 ARG LO_PPA=ppa
 
@@ -43,6 +45,7 @@ RUN add-apt-repository -y ppa:libreoffice/${LO_PPA} \
     librsvg2-bin \
     lbzip2 \
     libsigc++-2.0-0v5 \
+    gosu \
   && apt-get purge libreoffice-gnome* libreoffice-gtk* libreoffice-help* libreoffice-kde* \
   && rm -rf /var/lib/apt/lists/* \
   && fc-cache -f
@@ -59,5 +62,10 @@ RUN soffice --headless --terminate_after_init  \
   && python3 apply_binding.py \
   && rm apply_binding.py font-mappings.csv
 
-CMD soffice '--accept=socket,host=0.0.0.0,port=2002;urp;StarOffice.ServiceManager' --nologo --headless --nofirststartwizard --norestore
+USER root
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["soffice", "--accept=socket,host=0.0.0.0,port=2002;urp;StarOffice.ServiceManager", "--nologo", "--headless", "--nofirststartwizard", "--norestore"]
 
